@@ -2,7 +2,9 @@ import discord
 from discord.ext import commands
 from random import randrange
 
-TOKEN = ''
+with open("token.txt", "r") as tokenFile:
+    TOKEN = tokenFile.read()
+    print(TOKEN)
 
 bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
 bot.remove_command("help")
