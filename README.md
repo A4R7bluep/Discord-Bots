@@ -1,4 +1,8 @@
 ﻿# Discord-Bots
+
+## Description
+A repo containing all of my Discord bots in one place.
+ 
 ### Bot List
 > Rockbert Rock Paper Scissors Bot (rpsbot.py)
 
