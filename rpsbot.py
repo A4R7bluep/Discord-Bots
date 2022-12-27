@@ -133,7 +133,7 @@ async def game(ctx, opponent: discord.Member = None):
                 await player1.send(f"You chose {player1_choice[0].emoji}, which beats {player2.name}'s {player2_choice[0].emoji}.")
                 await player2.send(f"You chose {player2_choice[0].emoji}, which loses to {player1.name}'s {player1_choice[0].emoji}.")
 
-            elif verdict == "player 2 win":
+            elif verdict == "player2 win":
                 await player1.send(f"You chose {player1_choice[0].emoji}, which loses to {player2.name}'s {player2_choice[0].emoji}.")
                 await player2.send(f"You chose {player2_choice[0].emoji}, which beats {player1.name}'s {player1_choice[0].emoji}.")
 
