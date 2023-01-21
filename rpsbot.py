@@ -3,7 +3,7 @@ from discord.ext import commands
 from random import randrange
 
 with open("token.txt", "r") as tokenFile:
-    TOKEN = tokenFile.read()
+    TOKEN = (tokenFile.readlines())[0]
     print(TOKEN)
 
 bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
