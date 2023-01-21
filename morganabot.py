@@ -5,8 +5,15 @@ from discord.ext import commands
 
 
 with open("token.txt", "r") as tokenFile:
-    TOKEN = (tokenFile.readlines())[1]
+    TOKEN = (tokenFile.readlines())[1].strip("\n")
     print(TOKEN)
+    print()
+
+with open("slashguilds.txt", "r") as guildFile:
+    guilds = guildFile.readlines()
+    for i in range(len(guilds)):
+        guilds[i] = guilds[i].strip("\n")
+    print(guilds)
     print()
 
 
@@ -19,7 +26,7 @@ bot = commands.Bot(intents=intents, command_prefix="!")
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user}")
-    print(bot.user.id)
+    print(f"Bot user id: {bot.user.id}")
 
 
 @bot.tree.command(name="ping", description="Test command")
@@ -31,7 +38,8 @@ async def args(interaction: discord.Interaction, arg1: str):
     await interaction.response.send_message(arg1)
 
 
-guild = discord.Object(id="968327097351307294")
+# guild = discord.Object(id="968327097351307294")
+# guilds = [discord.Object(id="968327097351307294"), discord.Object(id="1065377395655323728")]
 
 @bot.command()
 @commands.guild_only()

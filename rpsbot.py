@@ -3,8 +3,9 @@ from discord.ext import commands
 from random import randrange
 
 with open("token.txt", "r") as tokenFile:
-    TOKEN = (tokenFile.readlines())[0]
+    TOKEN = (tokenFile.readlines())[0].strip("\n")
     print(TOKEN)
+    print()
 
 bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
 bot.remove_command("help")
