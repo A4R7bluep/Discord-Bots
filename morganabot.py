@@ -3,7 +3,7 @@ import discord
 from discord.ext.commands import Greedy, Context
 from discord.ext import commands
 
-
+# Get token and guilds from files
 with open("token.txt", "r") as tokenFile:
     TOKEN = (tokenFile.readlines())[1].strip("\n")
     print(TOKEN)
@@ -16,31 +16,36 @@ with open("slashguilds.txt", "r") as guildFile:
     print(guilds)
     print()
 
-
+# Prepare discord data
 intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
 bot = commands.Bot(intents=intents, command_prefix="!")
 
-
+# Onready notice
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user}")
     print(f"Bot user id: {bot.user.id}")
 
-
+# Slash command tree
 @bot.tree.command(name="ping", description="Test command")
 async def ping(interaction: discord.Interaction):
-    await interaction.response.send_message("pong!")
+    await interaction.response.send_message("pong!", ephemeral=True)
 
 @bot.tree.command(name="args", description="args test")
 async def args(interaction: discord.Interaction, arg1: str):
-    await interaction.response.send_message(arg1)
+    await interaction.response.send_message(arg1, ephemeral=True)
+
+'''Would not work because of a way the person who made the commission could be scammed'''
+# @bot.tree.command(name="secure-transaction", description="Command for making commission transactions as to not be scammed")
+# async def secure_transaction(interaction: discord.Interaction, user: discord.Member, *files: discord.file):
+#     await user.send(f"{interaction.user} has initiated a secure transaction.")
+#     await user.send("They have finished the work. Send the payment and I will send you the files.")
+#     await user.sent("React with ✅ when you have sent the payment.")
 
 
-# guild = discord.Object(id="968327097351307294")
-# guilds = [discord.Object(id="968327097351307294"), discord.Object(id="1065377395655323728")]
-
+# Sync command - run after updating command tree and use "!sync"
 @bot.command()
 @commands.guild_only()
 @commands.is_owner()
