@@ -1,26 +1,28 @@
-from typing import Literal, Optional
+from typing import Literal, Optional, Union, List
 import discord
+from discord import app_commands
 from discord.ext.commands import Greedy, Context
 from discord.ext import commands
 
 # Get token and guilds from files
 with open("token.txt", "r") as tokenFile:
     TOKEN = (tokenFile.readlines())[1].strip("\n")
-    print(TOKEN)
-    print()
+    # print(TOKEN)
+    # print()
 
 with open("slashguilds.txt", "r") as guildFile:
     guilds = guildFile.readlines()
     for i in range(len(guilds)):
         guilds[i] = guilds[i].strip("\n")
-    print(guilds)
-    print()
+    # print(guilds)
+    # print()
 
 # Prepare discord data
 intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
 bot = commands.Bot(intents=intents, command_prefix="!")
+
 
 # Onready notice
 @bot.event
@@ -38,14 +40,15 @@ async def args(interaction: discord.Interaction, arg1: str):
     await interaction.response.send_message(arg1, ephemeral=True)
 
 '''Would not work because of a way the person who made the commission could be scammed'''
-# @bot.tree.command(name="secure-transaction", description="Command for making commission transactions as to not be scammed")
-# async def secure_transaction(interaction: discord.Interaction, user: discord.Member, *files: discord.file):
-#     await user.send(f"{interaction.user} has initiated a secure transaction.")
-#     await user.send("They have finished the work. Send the payment and I will send you the files.")
-#     await user.sent("React with ✅ when you have sent the payment.")
+@bot.tree.command(name="secure-transaction", description="Command for making commission transactions as to not be scammed")
+async def secure_transaction(interaction: discord.Interaction, user: discord.Member, choices: Union[Literal["USD", "Robux", "Nitro"], Literal["USD", "Robux", "Nitro"]]):
+    await interaction.response.send_message(f"Transaction with {user.mention} opened.")
+
+    option = discord.ui.View().add_item(discord.ui.Select(options=[discord.SelectOption(label="Commissioner"), discord.SelectOption(label="Commissioned")]))
+    await interaction.followup.send(f"Are you the commissioner? or are you being commissioned?", ephemeral=True, view=option)
 
 
-# Sync command - run after updating command tree and use "!sync"
+# Sync command - run after updating command tree by using "!sync"
 @bot.command()
 @commands.guild_only()
 @commands.is_owner()
