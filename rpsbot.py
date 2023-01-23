@@ -34,7 +34,7 @@ class MyClient(discord.Client):
         await self.tree.sync(guild=GUILD_ID)
 
 
-intents = discord.Intents.default()
+intents = discord.Intents.all()
 client = MyClient(intents=intents)
 
 
@@ -135,7 +135,8 @@ async def game(interaction: discord.Interaction, opponent: Optional[discord.Memb
             clientMsgPlayer1 = await player1.send("React with rock (🪨), paper(📄), or scissors(✂️) to show your choice")
             for emoji in emojis:
                 await clientMsgPlayer1.add_reaction(emoji)
-            player1_choice = await client.wait_for("reaction_add", check=lambda reaction, user: user == player1 and reaction.message.id == clientMsgPlayer1.id)
+
+            player1_choice = await client.wait_for("reaction_add", check=lambda reaction, user: user == player1 and reaction.message.id == clientMsgPlayer1.id) 
 
             # Player 2 turn
             clientMsgPlayer2 = await player2.send("React with rock (🪨), paper(📄), or scissors(✂️) to show your choice")
