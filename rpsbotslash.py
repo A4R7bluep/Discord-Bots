@@ -11,7 +11,8 @@ with open("token.txt", "r") as tokenFile:
     print(TOKEN)
     print()
 
-GUILD_ID = discord.Object(id=1065377395655323728)
+# GUILD_ID = discord.Object(id=1065377395655323728)
+GUILD_ID = discord.Object(id=1088953784090251284)
 
 class MyClient(discord.Client):
     def __init__(self, *, intents: discord.Intents):
