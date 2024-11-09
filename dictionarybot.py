@@ -30,7 +30,7 @@ async def on_ready():
     print(f"{client.user} is online")
 
 
-@client.tree.command()
+@client.tree.command(description="returns the definition of the word")
 @app_commands.describe(word="Word to look up")
 async def define(interaction: discord.Interaction, word: str):
     url = "https://www.merriam-webster.com/dictionary/" + word
@@ -42,7 +42,7 @@ async def define(interaction: discord.Interaction, word: str):
     await interaction.response.send_message(f"# {word}:\n ```{definition}```")
 
 
-@client.tree.command()
+@client.tree.command(description="returns the etymology of the word")
 @app_commands.describe(word="Word to look up")
 async def etymology(interaction: discord.Interaction, word: str):
     url = "https://www.merriam-webster.com/dictionary/" + word
@@ -52,6 +52,25 @@ async def etymology(interaction: discord.Interaction, word: str):
     etymology = soup.find(attrs={"class": "et"}).text.strip()
 
     await interaction.response.send_message(f"# {word}:\n ```{etymology}```")
+
+
+@client.tree.command(description="returns the synonyms of the word")
+@app_commands.describe(word="Word to look up")
+async def synonyms(interaction: discord.Interaction, word: str):
+    url = "https://www.merriam-webster.com/thesaurus/" + word
+
+    req = requests.get(url)
+    soup = BeautifulSoup(req.content, "html.parser")
+    synonyms = soup.find(attrs={"class": "thes-list-content"}).text.strip().split()
+    synonymStr = ""
+
+    for i in range(len(synonyms)):
+        if i == len(synonyms):
+            synonymStr += synonyms[i]
+        else:
+            synonymStr += synonyms[i] + ", "
+
+    await interaction.response.send_message(f"# {word}:\n ```{synonymStr}```")
 
 
 client.run(TOKEN)
