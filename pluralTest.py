@@ -1,5 +1,8 @@
 import discord
-from discord import app_commands
+from discord import app_commands, Webhook, Guild, Forbidden
+from discord.ext.commands import has_permissions
+import aiohttp
+
 
 
 with open("token.txt", "r") as tokenFile:
@@ -28,10 +31,32 @@ async def on_ready():
     print(f"{client.user} is online")
 
 
-@client.tree.command(description="testing")
-@app_commands.describe(message="Your message you want to send")
-async def define(interaction: discord.Interaction, word: str):
-    pass
+@client.tree.command(description="sends a proxied message")
+@app_commands.describe(message="Your message", hookname="username of webhook")
+async def hooksend(interaction: discord.Interaction, message: str, hookname: str):
+    foundHook = False
+    # hooks = 
+    
+    for hook in await interaction.guild.webhooks():
+        if hook.name == f"CustomPlural: {hookname}":
+            await hook.send(content='Hello World', username=hookname)
+            await interaction.response.send_message("hook sent message hopefully", ephemeral=True)
+            foundHook = True
+
+    if foundHook == False:
+        await interaction.channel.create_webhook(name=f"CustomPlural: {hookname}")
+
+        # hooks = 
+        for hook in await interaction.channel.webhooks():
+            if hook.name == f"CustomPlural: {hookname}":
+                await hook.send(content='Hello World', username=hookname)
+                await interaction.response.send_message("hook sent message hopefully", ephemeral=True)
+
+@has_permissions(administrator=True)
+@client.tree.command(description="returns the user who used the hooksend")
+@app_commands.describe(message_id="Message ID")
+async def get_hookuser(interaction: discord.Interaction, message_id: str):
+    await interaction.response.send_message(0)
 
 
 client.run(TOKEN)
