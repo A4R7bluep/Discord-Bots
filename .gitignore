@@ -2,3 +2,6 @@
 
 token.txt
 slashguilds.txt
+
+## Ignore caching of pluralTest proxies
+pluralTree.json
